@@ -2,6 +2,7 @@ package com.local.latihan_spring.model;
 
 
 import com.local.latihan_spring.Enum.StatusEnum;
+import com.local.latihan_spring.exception.BadRequestException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -56,8 +57,8 @@ public class Order {
     }
 
     public Order(String customerName){
-        if (customerName == null){
-            throw new IllegalArgumentException("CustomerName is null");
+        if (customerName == null || customerName.isBlank()){
+            throw new BadRequestException("CustomerName is null or empty", "entity order");
         }
         this.customerName = customerName;
     }

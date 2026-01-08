@@ -1,6 +1,5 @@
 package com.local.latihan_spring.model.dto;
 
-import com.local.latihan_spring.model.Order;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
