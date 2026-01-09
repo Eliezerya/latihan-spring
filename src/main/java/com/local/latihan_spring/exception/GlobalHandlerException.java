@@ -24,6 +24,16 @@ public class GlobalHandlerException {
                         .build());
     }
 
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<?> generalException(GeneralException e){
+        return ResponseEntity
+                .internalServerError()
+                .body(ErrorResponse.builder()
+                        .errorCode(e.getFeature())
+                        .message(e.getMessage())
+                        .build());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> unexpectedHandler(Exception e){
         StackTraceElement ste = findAppStack(e);

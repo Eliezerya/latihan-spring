@@ -1,9 +1,9 @@
 package com.local.latihan_spring.service;
 
+import com.local.latihan_spring.exception.GeneralException;
 import com.local.latihan_spring.mapper.OrderMapper;
 import com.local.latihan_spring.mapper.ProductMapper;
 import com.local.latihan_spring.model.Order;
-import com.local.latihan_spring.model.OrderDetail;
 import com.local.latihan_spring.model.Product;
 import com.local.latihan_spring.model.dto.ProductDto;
 import com.local.latihan_spring.model.dto.RequestOrder;
@@ -13,17 +13,18 @@ import com.local.latihan_spring.repositories.OrderRepository;
 import com.local.latihan_spring.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -56,12 +57,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ProductDto productDetail(UUID id) {
+        log.info("service product detail :" + id);
         return productMapper.toProductDTO(getProductById(id));
+    }
+
+    @Override
+    public List<ProductDto> listProduct() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for (Product product : products){
+            productDtoList.add(productMapper.toProductDTO(product));
+        }
+        return (productDtoList);
     }
 
     public Product getProductById(UUID id){
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new GeneralException("Product not found","getProductById"));
     }
 
 }

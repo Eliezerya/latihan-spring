@@ -23,14 +23,19 @@ public class OrderController {
 
     @PostMapping("/request-order")
     public ResponseEntity<?> createOrder(@RequestBody RequestOrder orderRequest){
-
+        log.info("create-order-request: " + orderRequest.getCustomerName());
         return new ResponseEntity<>(orderService.createOrderService(orderRequest), HttpStatus.OK);
     }
 
     @GetMapping("/product/{idProduct}")
     public ResponseEntity<?> getProduct(@PathVariable(name = "idProduct") UUID idProduct){
-
+        log.info("get product detail: " + idProduct);
         return new ResponseEntity<>(orderService.productDetail(idProduct), HttpStatus.OK);
     }
 
+    @GetMapping("/product")
+    public ResponseEntity<?> productList(){
+        log.info("get product list");
+        return new ResponseEntity<>(orderService.listProduct(), HttpStatus.OK);
+    }
 }
