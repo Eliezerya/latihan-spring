@@ -15,8 +15,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -56,8 +58,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<ResponseOrder> findOrderByCustName(Pageable pageable, String custName) {
+        Page<Order> orders = orderRepository.findByCustomerNameContainingIgnoreCase(custName, pageable);
+        Page<ResponseOrder> resp = orders.map(orderMapper::toResponseOrderDTO);
+        return resp;
+    }
+
+    @Override
     public ProductDto productDetail(UUID id) {
-        log.info("service product detail :" + id);
+        log.info("service product detail :{}", id);
         return productMapper.toProductDTO(getProductById(id));
     }
 

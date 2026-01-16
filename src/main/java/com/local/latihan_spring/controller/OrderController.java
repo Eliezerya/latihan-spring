@@ -2,8 +2,12 @@ package com.local.latihan_spring.controller;
 
 
 import com.local.latihan_spring.model.dto.RequestOrder;
+import com.local.latihan_spring.model.dto.ResponseOrder;
 import com.local.latihan_spring.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @Slf4j
-@RequestMapping("/order")
+@RequestMapping("/v1")
 public class OrderController {
 
     private final OrderService orderService;
@@ -25,6 +29,12 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody RequestOrder orderRequest){
         log.info("create-order-request: " + orderRequest.getCustomerName());
         return new ResponseEntity<>(orderService.createOrderService(orderRequest), HttpStatus.OK);
+    }
+
+    @GetMapping("/orders")
+    public Page<ResponseOrder> allOrder(@PageableDefault Pageable pageable, @RequestParam String customerName){
+        return orderService.findOrderByCustName(pageable,customerName);
+
     }
 
     @GetMapping("/product/{idProduct}")

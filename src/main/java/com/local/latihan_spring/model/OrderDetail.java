@@ -1,10 +1,7 @@
 package com.local.latihan_spring.model;
 
-import com.local.latihan_spring.model.dto.OrderDetailDto;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
@@ -14,7 +11,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Table(name = "tb_order_detail")
